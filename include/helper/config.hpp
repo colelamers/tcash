@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include <filesystem>
+#include <vector>
+#include <map>
 
 #include "pugixml.hpp"
 
@@ -30,6 +32,7 @@ namespace helper
         void xml_write(const pugi::xml_document& doc, const std::string& fully_qualified_path);
         
         std::vector<pugi::xml_node> get_children_by_tag(const std::string& find_str);
+        std::map<std::string, std::string> get_node_attributes(pugi::xml_node node);
 
         pugi::xml_node get_node_by_tag(const std::string& find_str);
         pugi::xml_node get_node_by_value(const std::string& find_str);
