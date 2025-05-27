@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <username>cole</username>
+    <window_width>600</window_width>
+    <window_height>800</window_height>
+    <wordlist>
+        <item>of</item>
+        <item>stuff</item>
+    </wordlist>
+</config>
