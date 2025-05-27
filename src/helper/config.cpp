@@ -1,14 +1,13 @@
 #include <filesystem>
 #include <iostream>
 #include <string>
-#include <string.h>
 #include <fstream> 
 #include <vector>
 #include <map>
 
 #include "config.hpp"
 #include "pugixml.hpp"
-#include "ext.hpp"
+#include "str_ext.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
 // 2025, Cole Lamers <colelamers@gmail.com>
@@ -68,7 +67,7 @@ namespace helper {
             return {};
         }
 
-        if (ext::tolower(node.name()) == ext::tolower(find_str)) {
+        if (str_ext::tolower(node.name()) == str_ext::tolower(find_str)) {
             return node;
         }
 
@@ -86,7 +85,7 @@ namespace helper {
         if (!node) { 
             return {};
         }
-        if (ext::tolower(node.child_value()) == ext::tolower(find_str)) {
+        if (str_ext::tolower(node.child_value()) == str_ext::tolower(find_str)) {
             return node;
         }
 

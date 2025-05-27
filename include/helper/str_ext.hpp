@@ -1,8 +1,8 @@
-#ifndef EXT_H
-#define EXT_H
+#ifndef STR_EXT_H
+#define STR_EXT_H
 
 #include <string>
-namespace helper::ext {
+namespace helper::str_ext {
     std::string toupper(const std::string& str);
     std::string tolower(const std::string& str);
     std::string toproper(const std::string& str);

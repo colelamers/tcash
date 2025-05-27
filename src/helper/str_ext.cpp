@@ -1,9 +1,9 @@
 #include <string>
 #include <algorithm>
 
-#include "ext.hpp"
+#include "str_ext.hpp"
 
-namespace helper::ext {
+namespace helper::str_ext {
 
     std::string tolower(const char* c_str){
         std::string str(c_str);
