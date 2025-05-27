@@ -4,10 +4,19 @@
 #include <string.h>
 #include <fstream> 
 #include <vector>
+#include <map>
 
 #include "config.hpp"
 #include "pugixml.hpp"
 #include "ext.hpp"
+
+///////////////////////////////////////////////////////////////////////////////
+// 2025, Cole Lamers <colelamers@gmail.com>
+// 
+// The intent of this file is to provide a wrapper for the pugixml library to
+// access xml configuration files. This allows access to a reliable config
+// file that will be static throughout the life of the application.
+///////////////////////////////////////////////////////////////////////////////
 
 namespace helper {
     std::string config::_default_dir = "config";
@@ -36,10 +45,12 @@ namespace helper {
         return doc;
     }
 
+    // Write the current config doc file to a specified path
     void config::xml_write() {
         doc.save_file(config::get_config_file().c_str());
     }
 
+    // Write a custom xml file to a specified path
     void config::xml_write(const pugi::xml_document& doc, const std::string& fully_qualified_path) {
         doc.save_file(fully_qualified_path.c_str());
     }
@@ -103,6 +114,15 @@ namespace helper {
         return children;
     }
 
+    std::map<std::string, std::string> config::get_node_attributes(pugi::xml_node node){
+        std::map<std::string, std::string> attributes;
+
+        for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute()) {
+            attributes[attr.name()] = attr.value();
+        }
+        return attributes;
+    }
+
     std::filesystem::path config::get_project_path(){
         // Process:
         // project_root/src/helper/config.cpp
@@ -131,7 +151,6 @@ namespace helper {
 
         return final_path.string();
     }
-
 
      void config::create_config(){
         // Create Folder if it doesn't exist

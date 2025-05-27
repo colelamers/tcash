@@ -3,6 +3,7 @@
 #include <array>
 #include <string>
 #include <vector>
+
 #include "config.hpp" 
 
 // https://www.boost.org/doc/libs/latest/libs/libraries.htm
@@ -18,7 +19,7 @@ main(int argc, char **argv)
     auto c = cfg.get_node_by_tag("wordlist");
 
     std::vector<pugi::xml_node> node = cfg.get_children_by_tag("wordlist");
-    node.at(0).value();
+    node.at(0).child_value();
     std::array<std::string, 10> vals = { 
         x.child_value(), x.name(), 
         y.child_value(), y.name(), 
