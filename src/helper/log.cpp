@@ -10,7 +10,6 @@
 #include <mutex>
 
 #include "log.hpp"
-#include "str_ext.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
 // 2025, Cole Lamers <colelamers@gmail.com>
@@ -21,13 +20,14 @@
 namespace helper {
     std::string log::_default_dir = "logs";
 
-    log::log() : _full_path(get_log_path()), _full_file_path(get_log_file())
+    log::log() : _full_path(get_init_log_path()), _full_file_path(get_init_log_file())
     {
         // Make the folder
         create_log();
     }
 
     log& log::get_singleton() {
+        // Meyers singleton
         static log singleton;
         return singleton;
     }
@@ -75,11 +75,10 @@ namespace helper {
         return _full_path;
     }
 
-        std::string log::get_log_file(){
+    std::string log::get_log_file(){
         // project_root/log
         return _full_file_path;
     }
-
 
     void log::create_log(){
         // Create Folder if it doesn't exist
@@ -108,17 +107,15 @@ namespace helper {
         localtime_r(&in_time_t, &buf);
     #endif
 
+        
         std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(
                 now.time_since_epoch()) % 1000;
         std::ostringstream timestamp;
         timestamp << std::put_time(&buf, "%Y_%m_%d-%H_%M_")
                 << std::setw(3) << std::setfill('0') << ms.count();
-
-        // Compose log line
         std::string log_line = timestamp.str() + ": " + message + "\n";
-
-        // Append to file
         std::ofstream ofs(log::get_log_file(), std::ios::app);
+
         if (ofs.is_open()) {
             ofs << log_line;
         }

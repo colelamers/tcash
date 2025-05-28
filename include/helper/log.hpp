@@ -40,7 +40,7 @@ namespace helper
             // Singleton getter
             static log& get_singleton(); 
 
-            // Functions
+            // Accessors
             void create_log();
             void write_log(const std::string& message);
 
