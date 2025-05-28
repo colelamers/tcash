@@ -27,9 +27,9 @@ namespace helper {
         create_log();
     }
 
-    log& log::get_instance() {
-        static log instance;
-        return instance;
+    log& log::get_singleton() {
+        static log singleton;
+        return singleton;
     }
 
     std::filesystem::path log::get_project_path(){

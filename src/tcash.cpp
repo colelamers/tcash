@@ -8,11 +8,13 @@
 #include "log.hpp" 
 // https://www.boost.org/doc/libs/latest/libs/libraries.htm
 
+// args not used
+//main(int argc, char **argv)
 int
-main(int argc, char **argv)
+main()
 {
     helper::config cfg;
-    helper::log& log = helper::log::get_instance();
+    helper::log& log = helper::log::get_singleton();
     log.write_log("First log! Hooray!");
     auto x = cfg.get_node_by_tag("username");
     auto y = cfg.get_node_by_tag("window_width");

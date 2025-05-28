@@ -25,7 +25,7 @@ namespace helper
             ~log() = default;
             log(const log&) = delete;
             log& operator=(const log&) = delete;
-
+            
             // Static members
             static std::string _default_dir;
             static std::string get_init_log_file();
@@ -38,7 +38,7 @@ namespace helper
             std::mutex _write_mutex;
         public:
             // Singleton getter
-            static log& get_instance(); 
+            static log& get_singleton(); 
 
             // Functions
             void create_log();
