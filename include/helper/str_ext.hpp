@@ -2,6 +2,8 @@
 #define STR_EXT_H
 
 #include <string>
+#include <algorithm>
+
 namespace helper::str_ext {
     std::string toupper(const std::string& str);
     std::string tolower(const std::string& str);

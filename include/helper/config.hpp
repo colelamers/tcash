@@ -7,6 +7,7 @@
 #include <fstream> 
 #include <vector>
 #include <map>
+#include <mutex>
 
 #include "config.hpp"
 #include "pugixml.hpp"
@@ -17,9 +18,17 @@ namespace helper
     class config
     {
     private:
+        // Singleton
+        config();
+        ~config() = default;
+        config(const config&) = delete;
+        config(const std::string& fully_qualified_path);
+        config& operator=(const config&) = delete;
+        
         // Members
         std::filesystem::path _full_path;
         static std::string _default_dir;
+        std::mutex _write_mutex;
         
         // Functions
         void create_config(); 
@@ -28,14 +37,14 @@ namespace helper
         pugi::xml_node get_node_by_tag_recursive(pugi::xml_node node, const std::string& find_str); 
         pugi::xml_node get_node_by_value_recursive(pugi::xml_node node, const std::string& find_str);     
     public:
+        // Singleton getter
+        static config& get_singleton(); 
+        static config& get_singleton(const std::string& fully_qualified_path);
+
         // Members
         pugi::xml_document doc;
 
-        // Constructors
-        config();
-        config(const std::string& fully_qualified_path);
-
-        // Functions
+        // Accessors
         void xml_load();
         pugi::xml_document xml_load(const std::string& fully_qualified_path);
         void xml_write();

@@ -13,7 +13,7 @@
 int
 main()
 {
-    helper::config cfg;
+    helper::config& cfg = helper::config::get_singleton();
     helper::log& log = helper::log::get_singleton();
     log.write_log("First log! Hooray!");
     auto x = cfg.get_node_by_tag("username");

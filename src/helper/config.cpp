@@ -4,6 +4,7 @@
 #include <fstream> 
 #include <vector>
 #include <map>
+#include <mutex>
 
 #include "config.hpp"
 #include "pugixml.hpp"
@@ -20,25 +21,34 @@
 namespace helper {
     std::string helper::config::_default_dir = "config";
 
-    config::config() : _full_path(get_config_path())
-    {
-        // Make the folder
+    config::config() : _full_path(get_config_path()) {
         create_config();
         xml_load();
     }
 
     config::config(const std::string& fully_qualified_path)
-        : _full_path(fully_qualified_path)
-    {
+        : _full_path(fully_qualified_path) {
 
+    }
+
+    config& config::get_singleton() {
+        static config instance;
+        return instance;
+    }
+
+    config& config::get_singleton(const std::string& fully_qualified_path) {
+        static config instance(fully_qualified_path);
+        return instance;
     }
 
     // Load class default xml file
     void config::xml_load() {
+        std::lock_guard<std::mutex> lock(_write_mutex); // lock
         doc.load_file(config::get_config_file().c_str());
     }
 
     pugi::xml_document config::xml_load(const std::string& fully_qualified_path) {
+        std::lock_guard<std::mutex> lock(_write_mutex); // lock
         pugi::xml_document t_doc;
         t_doc.load_file(fully_qualified_path.c_str());
         return t_doc;
@@ -46,11 +56,13 @@ namespace helper {
 
     // Write the current config doc file to a specified path
     void config::xml_write() {
+        std::lock_guard<std::mutex> lock(_write_mutex); // lock
         doc.save_file(config::get_config_file().c_str());
     }
 
     // Write a custom xml file to a specified path
     void config::xml_write(const pugi::xml_document& t_doc, const std::string& fully_qualified_path) {
+        std::lock_guard<std::mutex> lock(_write_mutex); // lock
         t_doc.save_file(fully_qualified_path.c_str());
     }
 
