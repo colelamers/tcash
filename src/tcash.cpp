@@ -12,7 +12,7 @@ int
 main(int argc, char **argv)
 {
     helper::config cfg;
-    helper::log log;
+    helper::log& log = helper::log::get_instance();
     log.write_log("First log! Hooray!");
     auto x = cfg.get_node_by_tag("username");
     auto y = cfg.get_node_by_tag("window_width");

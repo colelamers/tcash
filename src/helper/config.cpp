@@ -39,9 +39,9 @@ namespace helper {
     }
 
     pugi::xml_document config::xml_load(const std::string& fully_qualified_path) {
-        pugi::xml_document doc;
-        doc.load_file(fully_qualified_path.c_str());
-        return doc;
+        pugi::xml_document t_doc;
+        t_doc.load_file(fully_qualified_path.c_str());
+        return t_doc;
     }
 
     // Write the current config doc file to a specified path
@@ -50,8 +50,8 @@ namespace helper {
     }
 
     // Write a custom xml file to a specified path
-    void config::xml_write(const pugi::xml_document& doc, const std::string& fully_qualified_path) {
-        doc.save_file(fully_qualified_path.c_str());
+    void config::xml_write(const pugi::xml_document& t_doc, const std::string& fully_qualified_path) {
+        t_doc.save_file(fully_qualified_path.c_str());
     }
 
     pugi::xml_node config::get_node_by_tag(const std::string& find_str) {

@@ -21,10 +21,15 @@
 namespace helper {
     std::string log::_default_dir = "logs";
 
-    log::log() : _full_path(get_log_path())
+    log::log() : _full_path(get_log_path()), _full_file_path(get_log_file())
     {
         // Make the folder
         create_log();
+    }
+
+    log& log::get_instance() {
+        static log instance;
+        return instance;
     }
 
     std::filesystem::path log::get_project_path(){
@@ -39,12 +44,12 @@ namespace helper {
             .parent_path();
     }
 
-    std::string log::get_log_path(){
+    std::string log::get_init_log_path(){
         // project_root/log
         return log::get_project_path() / _default_dir;
     }
 
-    std::string log::get_log_file() {
+    std::string log::get_init_log_file() {
         // now
         // today date time
         // yyyymmdd of today
@@ -64,6 +69,17 @@ namespace helper {
         std::filesystem::path final_path = root_path / _default_dir / log_filename;
         return final_path.string();
     }
+
+    std::string log::get_log_path(){
+        // project_root/log
+        return _full_path;
+    }
+
+        std::string log::get_log_file(){
+        // project_root/log
+        return _full_file_path;
+    }
+
 
     void log::create_log(){
         // Create Folder if it doesn't exist
@@ -106,5 +122,6 @@ namespace helper {
         if (ofs.is_open()) {
             ofs << log_line;
         }
+        ofs.close();
     }
 }

@@ -25,10 +25,10 @@ for dir in "${dirs[@]}"; do
     echo "Checking syntax of: $file"
     
     # Run g++ syntax check with  with includes
-    g++ -fsyntax-only -std=c++"${c_std}" "${includes[@]}" "$file"
+    g++ -fsyntax-only -std=c++"${c_std}" -Wall -Wextra -Werror -pedantic -Wconversion -Wsign-conversion -Wshadow -Wnull-dereference -Wold-style-cast -Woverloaded-virtual -Wdouble-promotion -Wformat=2 -Wimplicit-fallthrough -Wswitch-enum -Wuninitialized  "${includes[@]}" "$file"
     
     if [ $? -ne 0 ]; then
-      printf "\e[36mSyntax errors found in $file"
+      echo "\e[36mSyntax errors found in $file"
     fi
   done
 done
