@@ -4,6 +4,10 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <chrono>
+#include <iomanip>
+#include <sstream>
+#include <mutex>
 
 #include "log.hpp"
 #include "str_ext.hpp"
@@ -40,32 +44,28 @@ namespace helper {
         return log::get_project_path() / _default_dir;
     }
 
-    std::filesystem::path get_project_path();  // Assuming you have this implemented
-    constexpr const char* _default_dir = "logs";
-
-    std::string get_log_file() {
-        using namespace std::chrono;
-
-        // Get current date
-        auto now = system_clock::now();
-        auto today = floor<days>(now);
+    std::string log::get_log_file() {
+        // now
+        // today date time
+        // yyyymmdd of today
+        // 20250527
+        // tcash
+        auto now = std::chrono::system_clock::now();
+        auto today = std::chrono::floor<std::chrono::days>(now);
         std::chrono::year_month_day ymd = std::chrono::year_month_day{today};
-
-        // Format date as yyyymmdd
         std::string date_str = std::format("{:%Y%m%d}", ymd);
+        std::string base_filename = log::get_project_path().filename().string();
 
-        // Compose log filename
-        std::string base_filename = log::get_project_path().filename().string(); // e.g., "tcash"
-        std::string log_filename = date_str + "_" + base_filename + ".log";      // e.g., "20250527_tcash.log"
-
-        // Compose final path
+        // 20250527_tcash.log
+        // ~/project_root/
+        // ~/project_root/logs/20250527_tcash.log
+        std::string log_filename = date_str + "_" + base_filename + ".log";
         std::filesystem::path root_path = log::get_project_path();
         std::filesystem::path final_path = root_path / _default_dir / log_filename;
-
         return final_path.string();
     }
 
-     void log::create_log(){
+    void log::create_log(){
         // Create Folder if it doesn't exist
         if (!std::filesystem::exists(_full_path)) {
             std::filesystem::create_directories(_full_path);
@@ -75,8 +75,36 @@ namespace helper {
         std::string log_file = log::get_log_file();
         if (!std::filesystem::exists(log_file)) {
             std::ofstream ofs(log_file);
-            ofs << "<log></log>\n";
             ofs.close();
+        }
+    }
+
+    void log::write_log(const std::string& message) {
+        std::lock_guard<std::mutex> lock(_write_mutex); // lock
+
+        auto now = std::chrono::system_clock::now();
+        auto in_time_t = std::chrono::system_clock::to_time_t(now);
+
+        std::tm buf;
+    #ifdef _WIN32
+        localtime_s(&buf, &in_time_t);
+    #else
+        localtime_r(&in_time_t, &buf);
+    #endif
+
+        std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                now.time_since_epoch()) % 1000;
+        std::ostringstream timestamp;
+        timestamp << std::put_time(&buf, "%Y_%m_%d-%H_%M_")
+                << std::setw(3) << std::setfill('0') << ms.count();
+
+        // Compose log line
+        std::string log_line = timestamp.str() + ": " + message + "\n";
+
+        // Append to file
+        std::ofstream ofs(log::get_log_file(), std::ios::app);
+        if (ofs.is_open()) {
+            ofs << log_line;
         }
     }
 }

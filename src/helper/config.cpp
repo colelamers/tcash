@@ -18,7 +18,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace helper {
-    std::string config::_default_dir = "config";
+    std::string helper::config::_default_dir = "config";
 
     config::config() : _full_path(get_config_path())
     {

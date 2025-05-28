@@ -1,13 +1,16 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include <string>
-#include <vector>
 #include <filesystem>
+#include <iostream>
+#include <string>
+#include <fstream> 
 #include <vector>
 #include <map>
 
+#include "config.hpp"
 #include "pugixml.hpp"
+#include "str_ext.hpp"
 
 namespace helper
 {
