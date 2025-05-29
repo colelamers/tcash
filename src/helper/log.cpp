@@ -18,7 +18,17 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace helper {
+    //--------------------------------PRIVATE--------------------------------//
+
+    //
+    // Static Members
+    //
+
     std::string log::_default_dir = "logs";
+
+    //
+    // Constructors
+    //
 
     log::log() : _full_path(get_init_log_path()), _full_file_path(get_init_log_file())
     {
@@ -26,11 +36,9 @@ namespace helper {
         create_log();
     }
 
-    log& log::get_singleton() {
-        // Meyers singleton
-        static log singleton;
-        return singleton;
-    }
+    //
+    // Static Getters
+    //
 
     std::filesystem::path log::get_project_path(){
         // Process:
@@ -70,6 +78,22 @@ namespace helper {
         return final_path.string();
     }
 
+    //--------------------------------PUBLIC--------------------------------//
+
+    //
+    // Singleton Getters
+    //
+
+    log& log::get_singleton() {
+        // Meyers singleton
+        static log singleton;
+        return singleton;
+    }
+
+    //
+    // Getters
+    //
+
     std::string log::get_log_path(){
         // project_root/log
         return _full_path;
@@ -79,6 +103,10 @@ namespace helper {
         // project_root/log
         return _full_file_path;
     }
+
+    //
+    // Accessors
+    //
 
     void log::create_log(){
         // Create Folder if it doesn't exist
