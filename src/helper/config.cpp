@@ -28,20 +28,6 @@ namespace helper {
     std::string helper::config::_default_dir = "config";
 
     //
-    // Constructors
-    //
-
-    config::config() : _full_path(get_config_path()) {
-        create_config();
-        xml_load();
-    }
-
-    config::config(const std::string& fully_qualified_path)
-        : _full_path(fully_qualified_path) {
-
-    }
-
-    //
     // Accessors
     //
 
@@ -55,7 +41,7 @@ namespace helper {
         std::string config_file = config::get_config_file();
         if (!std::filesystem::exists(config_file)) {
             std::ofstream ofs(config_file);
-            ofs << "<config></config>\n";
+            ofs << "<config>\n<subitem type=\"int\"></subitem>\n</config>";
             ofs.close();
         }
     }
@@ -64,15 +50,18 @@ namespace helper {
     // Getters
     //
 
-    pugi::xml_node config::get_node_by_tag_recursive(pugi::xml_node node, const std::string& find_str) {
+    pugi::xml_node config::get_node_by_tag_recursive(
+        pugi::xml_node node, const std::string& find_str) {
         if (!node) { 
             return {};
         }
 
+        // Compare recursive node with node trying to find
         if (str_ext::tolower(node.name()) == str_ext::tolower(find_str)) {
             return node;
         }
 
+        // Node not found, then recurse
         for (pugi::xml_node child : node.children()) {
             pugi::xml_node found = get_node_by_tag_recursive(child, find_str);
             if (found) {
@@ -83,7 +72,8 @@ namespace helper {
         return {};
     }
 
-    pugi::xml_node config::get_node_by_value_recursive(pugi::xml_node node, const std::string& find_str) {
+    pugi::xml_node config::get_node_by_value_recursive(
+        pugi::xml_node node, const std::string& find_str) {
         if (!node) { 
             return {};
         }
@@ -104,20 +94,19 @@ namespace helper {
     //--------------------------------PUBLIC--------------------------------//
 
     //
-    // Singleton Getters
-    //
+    // Constructors
+    // 
 
-    config& config::get_singleton() {
-        static config instance;
-        return instance;
+    config::config() : _full_path(get_config_path()) {
+        create_config();
+        xml_load();
     }
 
-    config& config::get_singleton(const std::string& fully_qualified_path) {
-        static config instance(fully_qualified_path);
-        return instance;
+    config::config(const std::string& fully_qualified_path)
+        : _full_path(fully_qualified_path) {
+
     }
-
-
+    
     //
     // Static Getters
     //
@@ -171,6 +160,7 @@ namespace helper {
         if (!parent_node) { 
             return children;
         }
+        
         for (pugi::xml_node child : parent_node.children()) {
             children.push_back(child);
         }
@@ -180,7 +170,6 @@ namespace helper {
 
     std::map<std::string, std::string> config::get_node_attributes(pugi::xml_node node){
         std::map<std::string, std::string> attributes;
-
         for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute()) {
             attributes[attr.name()] = attr.value();
         }
@@ -208,8 +197,10 @@ namespace helper {
         doc.save_file(config::get_config_file().c_str());
     }
 
-    void config::xml_write(const pugi::xml_document& t_doc, const std::string& fully_qualified_path) {
+    void config::xml_write(const pugi::xml_document& t_doc, 
+        const std::string& fully_qualified_path) {
         std::lock_guard<std::mutex> lock(_write_mutex); // lock
         t_doc.save_file(fully_qualified_path.c_str());
     }
+
 }

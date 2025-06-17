@@ -5,7 +5,7 @@ cd ..
 dirs=("src" "include" "tests")
 c_std="23"
 
-# Hardcoded include paths from your CMakeLists.txt
+# Hardcoded include paths from CMakeLists.txt
 includes=(
     "-I${PWD}/libs/pugixml-1.15/src"
     "-I${PWD}/include"

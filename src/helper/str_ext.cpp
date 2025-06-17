@@ -1,5 +1,5 @@
 #include <string>
-#include <algorithm>
+#include <map>
 
 #include "str_ext.hpp"
 
@@ -91,5 +91,46 @@ namespace helper::str_ext {
             }
         }
         return result;
+    }
+
+    //
+    // String to number type converter
+    std::optional<int> toint(const std::string& str) {
+        try {
+            size_t pos;
+            int out = std::stoi(str, &pos);
+            if (pos == str.length()) {
+                return out;
+            }
+        } 
+        catch (const std::exception& e) { }
+        catch (...) { }
+        return std::nullopt;
+    }
+
+    std::optional<double> todouble(const std::string& str) {
+        try {
+            size_t pos;
+            double out = std::stod(str, &pos);
+            if (pos == str.length()) {
+                return out;
+            }
+        } 
+        catch (const std::exception& e) { }
+        catch (...) { }
+        return std::nullopt;
+    }
+
+    std::optional<float> tofloat(const std::string& str) {
+        try {
+            size_t pos;
+            double out = std::stof(str, &pos);
+            if (pos == str.length()) {
+                return out;
+            }
+        } 
+        catch (const std::exception& e) { }
+        catch (...) { }
+        return std::nullopt;
     }
 }
