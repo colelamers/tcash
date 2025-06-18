@@ -27,16 +27,6 @@ namespace helper {
     std::string log::_default_dir = "logs";
 
     //
-    // Constructors
-    //
-
-    log::log() : _full_path(get_init_log_path()), _full_file_path(get_init_log_file())
-    {
-        // Make the folder
-        create_log();
-    }
-
-    //
     // Static Getters
     //
 
@@ -81,13 +71,19 @@ namespace helper {
     //--------------------------------PUBLIC--------------------------------//
 
     //
-    // Singleton Getters
+    // Constructors
     //
+    log::log() : _full_path(get_init_log_path()), _full_file_path(get_init_log_file()),
+          _log_level(1)
+    {
+    }
 
-    log& log::get_singleton() {
-        // Meyers singleton
-        static log singleton;
-        return singleton;
+    log::log(int log_level)
+        : _full_path(get_init_log_path()), _full_file_path(get_init_log_file()),
+          _log_level(log_level)
+    {
+        // Make the folder
+        create_log();
     }
 
     //
@@ -135,12 +131,20 @@ namespace helper {
         localtime_r(&in_time_t, &buf);
     #endif
 
-        
-        std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-                now.time_since_epoch()) % 1000;
+        // Get Milliseconds
+        std::chrono::milliseconds ms = 
+            std::chrono::duration_cast<std::chrono::milliseconds>(
+                now.time_since_epoch()
+            ) % std::chrono::milliseconds(1000);
+            
+        // Set timestamp
         std::ostringstream timestamp;
         timestamp << std::put_time(&buf, "%Y_%m_%d-%H_%M_")
-                << std::setw(3) << std::setfill('0') << ms.count();
+                  << std::setw(3) 
+                  << std::setfill('0') 
+                  << ms.count();
+
+        // Log and Write to file
         std::string log_line = timestamp.str() + ": " + message + "\n";
         std::ofstream ofs(log::get_log_file(), std::ios::app);
 

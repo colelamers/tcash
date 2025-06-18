@@ -3,19 +3,25 @@
 #include <array>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "config.hpp" 
 #include "log.hpp" 
-// https://www.boost.org/doc/libs/latest/libs/libraries.htm
+#include "str_ext.hpp"
 
-// args not used
 //main(int argc, char **argv)
 int
 main()
 {
-    helper::config& cfg = helper::config::get_singleton();
-    helper::log& log = helper::log::get_singleton();
+    helper::config cfg;
+    std::string level_as_string = cfg.get_node_by_tag("loglevel").attribute("type").value();
+    std::optional<int> loglevel =  helper::str_ext::toint(level_as_string);
+    if (loglevel == std::nullopt){
+        return 0;
+    } 
+    helper::log log(1);
     log.write_log("First log! Hooray!");
+    log.write_log(__func__);
     auto x = cfg.get_node_by_tag("username");
     auto y = cfg.get_node_by_tag("window_width");
     auto z = cfg.get_node_by_tag("window_height");

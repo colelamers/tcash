@@ -2,35 +2,24 @@
 #define CONFIG_H
 
 #include <filesystem>
-#include <iostream>
 #include <string>
-#include <fstream> 
 #include <vector>
 #include <map>
 #include <mutex>
 
-#include "config.hpp"
 #include "pugixml.hpp"
-#include "str_ext.hpp"
 
 namespace helper
 {
     class config
     {
     private:
-        // Static Members
+            // Static Members
         static std::string _default_dir;
-
+        
         // Members
         std::filesystem::path _full_path;
         std::mutex _write_mutex;
-
-        // Singleton
-        config();
-        ~config() = default;
-        config(const config&) = delete;
-        config(const std::string& fully_qualified_path);
-        config& operator=(const config&) = delete;
 
         // Getters
         pugi::xml_node get_node_by_tag_recursive(pugi::xml_node node, const std::string& find_str); 
@@ -38,15 +27,16 @@ namespace helper
         
         // Accessors
         void create_config(); 
+
     public:
+        // Constructors
+        config();
+        config(const std::string& fully_qualified_path);
+
         // Members
         pugi::xml_document doc;
 
-        // Singleton Getters
-        static config& get_singleton(); 
-        static config& get_singleton(const std::string& fully_qualified_path);
-        
-        // Static Getters
+        // Static Utility Functions (optional to keep)
         static std::filesystem::path get_project_path();
         static std::string get_config_path();
         static std::string get_config_file();
