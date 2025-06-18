@@ -21,9 +21,9 @@ namespace helper::str_ext {
     std::string toproper_ascii_word(std::string& str);
 
     // String to Number
-    std::optional<int> toint(std::string& str);
-    std::optional<double> todouble(std::string& str);
-    std::optional<float> tofloat(std::string& str);
+    std::optional<int> toint(const std::string& str);
+    std::optional<double> todouble(const std::string& str);
+    std::optional<float> tofloat(const std::string& str);
 }
 
 #endif

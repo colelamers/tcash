@@ -17,11 +17,11 @@ namespace helper {
             setup();
 
             // Accessor
-            void log_set(std::unique_ptr<log> log);
-
+            void set_log(std::unique_ptr<log> lg);
+            void set_config(std::unique_ptr<config> cfg);
             // Getter
-            log& log_get();
-            config get_config();
+            log& get_log();
+            config& get_config();
     };
 }
 #endif
