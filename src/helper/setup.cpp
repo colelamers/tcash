@@ -5,6 +5,7 @@
 #include "log.hpp"
 #include "config.hpp"
 #include "setup.hpp"
+
 namespace helper {
         // Constructors
     setup::setup() : 
@@ -14,12 +15,20 @@ namespace helper {
 
     }
 
-    log& setup::log_get(){
+    log& setup::get_log(){
         return *_log;
     }
 
-    void setup::log_set(std::unique_ptr<log> log) {
-            _log = std::move(log);
+    void setup::set_log(std::unique_ptr<log> lg) {
+            _log = std::move(lg);
+    }
+
+    config& setup::get_config(){
+        return *_config;
+    }
+
+    void setup::set_config(std::unique_ptr<config> cfg) {
+            _config = std::move(cfg);
     }
 }
 

@@ -14,7 +14,7 @@ namespace helper
     class config
     {
     private:
-            // Static Members
+        // Static Members
         static std::string _default_dir;
         
         // Members

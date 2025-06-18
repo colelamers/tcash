@@ -93,7 +93,6 @@ namespace helper::str_ext {
         return result;
     }
 
-    //
     // String to number type converter
     std::optional<int> toint(const std::string& str) {
         try {
