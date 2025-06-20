@@ -6,29 +6,30 @@
 #include "config.hpp"
 #include "setup.hpp"
 
-namespace helper {
-        // Constructors
-    setup::setup() : 
-        _log(std::make_unique<log>()), 
-        _config(std::make_unique<config>())
-    {
+///////////////////////////////////////////////////////////////////////////////
+// 2025, Cole Lamers <colelamers@gmail.com>
+// 
+// Contains the default object for the project which contains logging 
+// capabilities and config initialization.
+///////////////////////////////////////////////////////////////////////////////
 
+namespace helper {
+    // Constructors
+    setup::setup() 
+        : _log(std::make_unique<log>()), 
+          _config(std::make_unique<config>()) {}
+
+    setup& setup::instance() {
+        static setup s;
+        return s;
     }
 
-    log& setup::get_log(){
+    log& setup::get_log() {
         return *_log;
     }
 
-    void setup::set_log(std::unique_ptr<log> lg) {
-            _log = std::move(lg);
-    }
-
-    config& setup::get_config(){
+    config& setup::get_config() {
         return *_config;
-    }
-
-    void setup::set_config(std::unique_ptr<config> cfg) {
-            _config = std::move(cfg);
     }
 }
 

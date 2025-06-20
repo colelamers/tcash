@@ -12,6 +12,12 @@
 int
 main()
 {
+    helper::setup& def = helper::setup::instance();
+    def.get_log().alert_log("Issue with this if this happens!");
+    return 0;
+}
+
+/*
     helper::setup def;
     std::string level_as_string = def.get_config().get_node_by_tag("loglevel")
         .attribute("type").value();
@@ -36,5 +42,4 @@ main()
         c.first_child().value(), c.name()
     };
 
-    return 0;
-}
+*/

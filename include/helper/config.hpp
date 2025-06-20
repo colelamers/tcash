@@ -9,25 +9,8 @@
 
 #include "pugixml.hpp"
 
-namespace helper
-{
-    class config
-    {
-    private:
-        // Static Members
-        static std::string _default_dir;
-        
-        // Members
-        std::filesystem::path _full_path;
-        std::mutex _write_mutex;
-
-        // Getters
-        pugi::xml_node get_node_by_tag_recursive(pugi::xml_node node, const std::string& find_str); 
-        pugi::xml_node get_node_by_value_recursive(pugi::xml_node node, const std::string& find_str);     
-        
-        // Accessors
-        void create_config(); 
-
+namespace helper {
+    class config {
     public:
         // Constructors
         config();
@@ -52,6 +35,20 @@ namespace helper
         pugi::xml_document xml_load(const std::string& fully_qualified_path);
         void xml_write();
         void xml_write(const pugi::xml_document& t_doc, const std::string& fully_qualified_path);
+    private:
+        // Static Members
+        static std::string _default_dir;
+        
+        // Members
+        std::filesystem::path _full_path;
+        std::mutex _write_mutex;
+
+        // Getters
+        pugi::xml_node get_node_by_tag_recursive(pugi::xml_node node, const std::string& find_str); 
+        pugi::xml_node get_node_by_value_recursive(pugi::xml_node node, const std::string& find_str);
+        
+        // Accessors
+        void create_config(); 
     };
 }
 

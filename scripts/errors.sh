@@ -7,7 +7,7 @@ c_std="23"
 
 # Hardcoded include paths from CMakeLists.txt
 includes=(
-    "-I${PWD}/libs/pugixml-1.15/src"
+    "-I${PWD}/libs/pugixml-1.15"
     "-I${PWD}/include"
     "-I${PWD}/include/helper"
 )
