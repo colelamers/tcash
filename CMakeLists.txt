@@ -10,12 +10,12 @@ add_executable(tcash ${SRC_FILES})
 
 # Add pugixml include directory so headers are found
 target_include_directories(tcash PRIVATE
-    ${PROJECT_SOURCE_DIR}/libs/pugixml-1.15/src
+    ${PROJECT_SOURCE_DIR}/libs/pugixml-1.15
     ${PROJECT_SOURCE_DIR}/include
     ${PROJECT_SOURCE_DIR}/include/helper
 )
 
 # Link the static pugixml library explicitly by path
 target_link_libraries(tcash PRIVATE
-    ${PROJECT_SOURCE_DIR}/libs/pugixml-1.15/build/libpugixml.a
+    ${PROJECT_SOURCE_DIR}/libs/pugixml-1.15/libpugixml.a
 )

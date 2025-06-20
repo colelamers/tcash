@@ -6,22 +6,22 @@
 ///////////////////////////////////////////////////////////////////////////////
 // 2025, Cole Lamers <colelamers@gmail.com>
 // 
-// My static class for string extension helper methods
+// String extension helper methods
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace helper::str_ext {
 
-    std::string tolower(const char* c_str){
+    std::string tolower(const char* c_str) {
         std::string str(c_str);
         return tolower(str);
     }
 
-    std::string toupper(const char* c_str){
+    std::string toupper(const char* c_str) {
         std::string str(c_str);
         return toupper(str);
     }
 
-    std::string toproper(const char* c_str){
+    std::string toproper(const char* c_str) {
         std::string str(c_str);
         return toproper(str);
     }
@@ -55,7 +55,7 @@ namespace helper::str_ext {
     }
 
     // English ASCII Only
-    std::string tolower_ascii_word(std::string& str){
+    std::string tolower_ascii_word(std::string& str) {
         std::string result = str;
         for (char& c: result) {
             if ('A' <= c && c <= 'Z') { 
@@ -65,7 +65,7 @@ namespace helper::str_ext {
         return result;
     }
 
-    std::string toupper_ascii_word(std::string& str){
+    std::string toupper_ascii_word(std::string& str) {
         std::string result = str;
         for (char& c: result) {
             if ('a' <= c && c <= 'z') { 

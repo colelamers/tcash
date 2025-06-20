@@ -9,19 +9,26 @@
 
 namespace helper {
     class setup {
-        private:
-            std::unique_ptr<log> _log;
-            std::unique_ptr<config> _config;
-        public:
-            // Constructors
-            setup();
+    public:
+        // Access singleton instance
+        static setup& instance();
 
-            // Accessor
-            void set_log(std::unique_ptr<log> lg);
-            void set_config(std::unique_ptr<config> cfg);
-            // Getter
-            log& get_log();
-            config& get_config();
+        // Delete copy/move operations
+        setup(const setup&) = delete;
+        setup(setup&&) = delete;
+        setup& operator=(const setup&) = delete;
+        setup& operator=(setup&&) = delete;
+
+        // Accessors
+        log& get_log();
+        config& get_config();
+
+    private:
+        // Private constructor
+        setup();
+
+        std::unique_ptr<log> _log;
+        std::unique_ptr<config> _config;
     };
 }
 #endif
