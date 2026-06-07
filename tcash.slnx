@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="tcash.Tests/tcash.Tests.csproj" />
+  <Project Path="tcash/tcash.csproj" />
+</Solution>
