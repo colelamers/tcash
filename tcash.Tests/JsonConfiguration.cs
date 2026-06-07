@@ -25,11 +25,9 @@ public class JsonConfigurationTests
     public void Get_ShouldReturnJsonElement_WhenFileExists()
     {
         var dir = CreateTempConfigDir();
-
         WriteConfig(dir, "app", "{ \"name\": \"tcash\" }");
 
         var config = new JsonConfiguration(dir);
-
         var result = config.Get("app");
 
         Assert.True(result.TryGetProperty("name", out var value));
@@ -39,18 +37,20 @@ public class JsonConfigurationTests
     // ----------------------------
     // TEST 2: Missing file throws
     // ----------------------------
+
     [Fact]
     public void Get_ShouldThrow_WhenFileMissing()
     {
         var dir = CreateTempConfigDir();
-
         var config = new JsonConfiguration(dir);
 
-        Assert.Throws<KeyNotFoundException>(() =>
+        void MissingFileCall()
         {
             config.Get("missing");
-        });
+        }
+        Assert.Throws<KeyNotFoundException>(MissingFileCall);
     }
+
 
     // ----------------------------
     // TEST 3: Strongly typed deserialization
@@ -64,13 +64,9 @@ public class JsonConfigurationTests
     public void GetT_ShouldDeserializeCorrectly()
     {
         var dir = CreateTempConfigDir();
-
         WriteConfig(dir, "app", "{ \"Name\": \"tcash\" }");
-
         var config = new JsonConfiguration(dir);
-
         var result = config.Get<TestConfig>("app");
-
         Assert.Equal("tcash", result.Name);
     }
 

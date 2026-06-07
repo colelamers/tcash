@@ -1,18 +1,19 @@
 using System.Text.Json;
+namespace tcash.Services;
 
-public class JsonConfiguration
+public class JsonConfigService
 {
-    private readonly string config_path_;
-    private readonly Dictionary<string, JsonElement> cache_ = 
+    private readonly string ConfigPath;
+    private readonly Dictionary<string, JsonElement> Cache =
         new Dictionary<string, JsonElement>();
 
-    public JsonConfiguration(string configDirectory)
+    public JsonConfigService(string configDirectory)
     {
-        config_path_ = configDirectory;
+        ConfigPath = configDirectory;
 
-        if (!Directory.Exists(config_path_))
+        if (!Directory.Exists(ConfigPath))
         {
-            throw new DirectoryNotFoundException($"Config folder not found: {config_path_}");
+            throw new DirectoryNotFoundException($"Config folder not found: {ConfigPath}");
         }
 
         LoadAllConfigs();
@@ -20,20 +21,20 @@ public class JsonConfiguration
 
     private void LoadAllConfigs()
     {
-        foreach (var file in Directory.GetFiles(config_path_, "*.json"))
+        foreach (var file in Directory.GetFiles(ConfigPath, "*.json"))
         {
             using (var doc = JsonDocument.Parse(File.ReadAllText(file)))
             {
                 var root = doc.RootElement.Clone();
                 var key = Path.GetFileNameWithoutExtension(file);
-                cache_[key] = root;
+                Cache[key] = root;
             }
         }
     }
 
     public JsonElement Get(string fileName)
     {
-        if (cache_.TryGetValue(fileName, out var value))
+        if (Cache.TryGetValue(fileName, out var value))
         {
             return value;
         }
@@ -68,7 +69,7 @@ public class JsonConfiguration
 
     public void Reload()
     {
-        cache_.Clear();
+        Cache.Clear();
         LoadAllConfigs();
     }
 }
